@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\File;
+use App\Entity\User;
 use App\Services\TableFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,13 +13,15 @@ class NavbarController extends AbstractController
 {
     public function navbar()
     {
-        $files = new TableFile();
         $name = $this->getUser()->getUserIdentifier();
-        $listFiles = $files->FileByOwner($name);
+
+        $file = $this->getDoctrine()->getRepository(File::class)->findBy(
+            ['owner' => $name]
+        );;
 
         return $this->render('navbar/index.html.twig', [
             'controller_name' => 'NavbarController',
-            'pages' => $listFiles,
+            'files' => $file,
         ]);
     }
 }

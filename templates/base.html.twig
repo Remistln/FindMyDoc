@@ -8,13 +8,13 @@
         {% block stylesheets %}
             <link rel="stylesheet" href={{ asset('css/navbar.css') }}>
         {% endblock %}
-
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
     </head>
     <body>
-        {% block navbar %}{% endblock %}
+        {% block navbar %}
+
+            {{ render(controller('App\\Controller\\NavbarController::navbar')) }}
+
+        {% endblock %}
         <div id="page">
             {% block body %}{% endblock %}
         </div>

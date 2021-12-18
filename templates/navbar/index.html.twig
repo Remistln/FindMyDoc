@@ -4,15 +4,11 @@
 <table>
     <ul>
         <li>Login</li>
-        {% block liste %}{% endblock %}
+        {% block liste %}
+            {% for i in files %}
+                <li>{{ i.name }}</li>
+            {% endfor %}
+        {% endblock %}
     </ul>
 </table>
-<div id="page">
-    {% block liste %}
-        {% for i in files %}
-            <li>{{ i }}</li>
-        {% endfor %}
-    {% endblock %}
-    {% block body %}{% endblock %}
-</div>
 {% endblock %}

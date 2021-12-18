@@ -31,22 +31,6 @@ class SetupController extends AbstractController
         $form = $this->createForm(MakePageFormType::class);
         $form->handleRequest($request);
 
-//        $appel = @file_get_contents("http://127.0.0.1:8000/api/files");
-//        $appel = json_decode($appel, true);
-//        $tableau = [];
-//        $files = $appel["hydra:member"];
-//        foreach($files as $fileTableau)
-//        {
-//            $service = (new File())
-//                ->setId($fileTableau['id'])
-//                ->setName($fileTableau['name'])
-//            ;
-//            array_push($tableau, $service);
-//        }
-
-        $file = $this->getDoctrine()->getRepository(File::class)->findAll();
-        dd($file);
-
         return $this->render('setup/index.html.twig', [
             'controller_name' => 'SetupController',
             'formSetup'=> $form->createView(),
