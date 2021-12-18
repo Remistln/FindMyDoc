@@ -1,9 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Set up your document {% endblock %}
-
+{% block navbar %}
+    <table>
+        <ul>
+            <li>Login</li>
+        </ul>
+    </table>
+    <div id="page">
+        {% block liste %}
+            {% for i in files %}
+                <li>{{ i }}</li>
+            {% endfor %}
+        {% endblock %}
+    </div>
+{% endblock %}
 {% block body %}
-
+        {% for i in files %}
+            <li>{{ i }}</li>
+        {% endfor %}
     <div class="container-lg">
         {{ form(formSetup) }}
     </div>

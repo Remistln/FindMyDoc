@@ -3,14 +3,14 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\PageRepository;
+use App\Repository\FileRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=PageRepository::class)
+ * @ORM\Entity(repositoryClass=FileRepository::class)
  */
 #[ApiResource]
-class Page
+class File
 {
     /**
      * @ORM\Id
@@ -25,13 +25,20 @@ class Page
     private $name;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="string", length=255)
      */
-    private $docList = [];
+    private $owner;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -46,14 +53,14 @@ class Page
         return $this;
     }
 
-    public function getDocList(): ?array
+    public function getOwner(): ?string
     {
-        return $this->docList;
+        return $this->owner;
     }
 
-    public function setDocList(array $docList): self
+    public function setOwner(string $owner): self
     {
-        $this->docList = $docList;
+        $this->owner = $owner;
 
         return $this;
     }
