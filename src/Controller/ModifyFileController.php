@@ -6,15 +6,18 @@ use App\Entity\Documentation;
 use App\Entity\File;
 use App\Form\MakePageFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ModifyFileController extends AbstractController
 {
     #[Route('/file/modify/{name}', name: 'modify_file')]
-    public function index($name, Request $request): Response
+    public function index($name, Request $request, SluggerInterface $slugger): Response
     {
+        // Pour chaque doc lié a cette page, il va les mettre dans une liste pour la passer dans la vue twig
         $username = $this->getUser()->getUserIdentifier();
         $em = $this->getDoctrine()->getManager();
 
@@ -31,13 +34,30 @@ class ModifyFileController extends AbstractController
             array_push($listdoc, $document);
         }
 
+        // Creer le formulaire d'ajout de doc
         $form = $this->createForm(MakePageFormType::class);
         $form->handleRequest($request);
 
+        // Si le formulaire est submit et valide
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            dump($data['fichier']);
-            $doc = new Documentation();
+            $data = $form->get('fichier')->getData();
+
+            //Recupere le nom du fichier avec l'extension
+            $originalFilename = pathinfo($data->getClientOriginalName(), PATHINFO_FILENAME);
+
+            // Donne un nom unique au fichier
+            $safeFilename = $slugger->slug($originalFilename);
+            $name = $safeFilename.'-'.uniqid().'.'.$data->guessExtension();
+
+            //On le deplace dans le bon dossier
+            try {
+                $data->move(
+                    $this->getParameter('upload_directory') . $username,
+                    $name
+                );
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+            }
         }
 
         return $this->render('modify_file/index.html.twig', [

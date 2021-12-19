@@ -34,20 +34,22 @@
     </style>
     <div class="container-lg">
         <h1>{{ nom }}</h1>
-        {% for doc in listdoc %}
-            {% if doc.type == "pdf" %}
-                <li id="doc">
-                    <form action="../../doc/delete/{{ doc.id }}">
-                        <button id="deletedoc" type="submit"> - </button>
-                    </form>
-                    <iframe
-                            src="{{ doc.link }}"
-                            width="70%"
-                            height="500"
-                            scrolling="no">
-                    </iframe>
-                </li>
-            {% endif %}
-        {% endfor %}
+        {% if listdoc %}
+            {% for doc in listdoc %}
+                {% if doc.type == "pdf" %}
+                    <li id="doc">
+                        <form action="../../doc/delete/{{ doc.id }}">
+                            <button id="deletedoc" type="submit"> - </button>
+                        </form>
+                        <iframe
+                                src="{{ doc.link }}"
+                                width="70%"
+                                height="500"
+                                scrolling="no">
+                        </iframe>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     </div>
 {% endblock %}

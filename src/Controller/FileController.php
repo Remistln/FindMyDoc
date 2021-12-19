@@ -33,11 +33,12 @@ class FileController extends AbstractController
             );
         $liste = $get->getDocList();
         $listdoc = [];
+        if ($liste){
         foreach ($liste as $doc){
             $document = $em->getRepository(Documentation::class)->findOneBy(['id' => $doc]);
             array_push($listdoc, $document);
         }
-
+        }
         return $this->render('file/file.html.twig', [
             'controller_name' => 'FileController',
             'nom' => strtoupper($name),
