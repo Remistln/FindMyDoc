@@ -5,7 +5,6 @@
     <style media="screen">
         *{
             font-family: 'Poppins',sans-serif;
-            font
         }
         table{
             width: 20%;
@@ -18,8 +17,8 @@
              text-align: center;
              color: white;
          }
-        ul span{
-            margin-left: 20px;
+        #mesdoc{
+            padding-left: 5%;
             color: white;
         }
         #filesnames li{
@@ -31,14 +30,15 @@
         #link{
             color: white;
             width: 55%;
-            text-align: right;
+            flex-grow: 5;
+            text-align: center;
         }
 
-        #filesnames li #image{
+        #filesnames li #trash{
             width: 6%;
             margin-left: 7%;
         }
-        #image img{
+        #trash img{
             width: 100%;
         }
 
@@ -81,12 +81,13 @@
             </form>
         </li>
         {% block liste %}
-            <span>Mes documentations :</span>
+            <span id="mesdoc">Mes documentations :</span>
             <div id="filesnames">
             {% for i in files %}
                 <li id="file">
                     <a id="link" href="/file/{{ i.name }}">{{ i.name }}</a>
-                    <a id="image" href="/file/delete/{{ i.id }}"><img src="{{ asset('css/img/poubelle.png') }}" alt="trash"></a>
+                    <a id="trash" href="/file/delete/{{ i.id }}"><img src="{{ asset('css/img/poubelle.png') }}" alt="trash"></a>
+                    <a id="trash" href="{{ path('modify_file', {'name': i.name }) }}"><img src="{{ asset('css/img/pen.png') }}" alt="pen"></a>
                 </li>
             {% endfor %}
                 <li id="newfile">

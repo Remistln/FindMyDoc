@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        .container-lg{
+            margin-top: 0;
+            margin-left: 25%;
+            text-align: center;
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #filename{
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        h2 {
+            color: white;
+        }
+        #doc{
+            list-style-type: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        span{
+            border: 0;
+            padding-left: 5%;
+            color: white;
+        }
+        #deletedoc{
+            width: 100%;
+            background-color: #ffffff;
+            border: 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #newdoc{
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        #newdoc form{
+            width: 75%;
+            height: 2rem%;
+        }
+
+        #newdoc form button{
+            text-align: center;
+            margin-top: 2.5rem;
+            background-color: #ffffff;
+            border: 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .popup{
+            display: none;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin-top: 0;
+            margin-left: 25%;
+            list-style-type: none;
+            flex-direction: column;
+        }
+
+        #choicedoc, #fichier, #new{
+            margin-top: 10px;
+        }
+
+    </style>
+    <div class="container-lg">
+        <h1 id="filename">{{ nom }}</h1>
+        <h2>Liste des Fichiers :</h2>
+        {% if listdoc %}
+            {% for doc in listdoc %}
+                <li id="doc">
+                    <form action="../../doc/delete/{{ doc.id }}">
+                        <button id="deletedoc" type="submit"> - </button>
+                    </form>
+                    <span>
+                            {{ doc.name }}
+                    </span>
+                </li>
+            {% endfor %}
+        {% else %}
+            <h1 id="nodoc">
+                Vous n'avez pas de documents sur cette page
+            </h1>
+        {% endif %}
+            <li id="newdoc">
+                <form method="get" action="#">
+                    <button id="new"> Ajouter </button>
+                </form>
+            </li>
+    </div>
+    <div class="popup">
+        <h1 id="filename">{{ nom }}</h1>
+        <h2>Ajouter un fichier :</h2>
+        {{ form_start(modifyForm) }}
+
+        {{ form_row(modifyForm.choice) }}
+        {{ form_row(modifyForm.fichier) }}
+        {{ form_row(modifyForm.submit) }}
+        {{ form_end(modifyForm) }}
+    </div>
+    <script>
+        document.getElementById("new").addEventListener('click', function (){
+            document.querySelector(".popup").style.display = "flex";
+            document.querySelector(".container-lg").style.display = "none";
+        })
+
+        document.getElementById("choicedoc").onchange = changeListener;
+
+        function changeListener(){
+            var value = this.value
+
+            if (value === "pdf"){
+                document.getElementById("fichier").setAttribute("accept", ".pdf");
+            }
+        }
+    </script>
+{% endblock %}

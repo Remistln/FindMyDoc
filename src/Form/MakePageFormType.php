@@ -21,17 +21,14 @@ class MakePageFormType extends AbstractType
         $documentation = new Documentation();
 
         $builder
-            ->add('More', ChoiceType::class, [
+            ->add('choice', ChoiceType::class, [
                 'choices'  => [
-                    'Text' => $documentation,
-                    'Document' => $documentation,
+                    'PDF' => $documentation,
                 ], 'allow_extra_fields' => true,
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event){
-                $class= $event->getData();
-                $class['new_field'] = FileType::class;
-                $event->setData($class);
-            })
+            ->add('fichier', FileType::class, [
+                'attr' => ['accept' => ''],
+            ])
             ->add('submit', SubmitType::class);
     }
 
