@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <style>
+        .container-lg{
+            margin-top: 0;
+            margin-left: 25%;
+            text-align: center;
+        }
+        h1{
+            text-align: center;
+            color: white;
+        }
+        #doc{
+            list-style-type: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        iframe{
+            border: 0;
+            padding-left: 5%;
+        }
+        #deletedoc{
+            width: 100%;
+            background-color: #ffffff;
+            border: 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+    </style>
+    <div class="container-lg">
+        <h1>{{ nom }}</h1>
+        {% for doc in listdoc %}
+            {% if doc.type == "pdf" %}
+                <li id="doc">
+                    <form action="../../doc/delete/{{ doc.id }}">
+                        <button id="deletedoc" type="submit"> - </button>
+                    </form>
+                    <iframe
+                            src="{{ doc.link }}"
+                            width="70%"
+                            height="500"
+                            scrolling="no">
+                    </iframe>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

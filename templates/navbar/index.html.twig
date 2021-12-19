@@ -1,13 +1,100 @@
 {% extends 'base.html.twig' %}
 
 {% block navbar %}
+
+    <style media="screen">
+        *{
+            font-family: 'Poppins',sans-serif;
+            font
+        }
+        table{
+            width: 20%;
+        }
+        ul{
+            padding-top: 20px;
+            background-color: #23272A;
+        }
+         ul li{
+             text-align: center;
+             color: white;
+         }
+        ul span{
+            margin-left: 20px;
+            color: white;
+        }
+        #filesnames li{
+            margin: 20px 0 20px 0;
+            display: flex;
+            font-size: 20px;
+        }
+
+        #link{
+            color: white;
+            width: 55%;
+            text-align: right;
+        }
+
+        #filesnames li #image{
+            width: 6%;
+            margin-left: 7%;
+        }
+        #image img{
+            width: 100%;
+        }
+
+        #logout{
+                margin-top: 30px;
+                margin-bottom: 25px;
+                width: 60%;
+                color: #080710;
+                padding: 15px 0;
+                font-size: 18px;
+                font-weight: 600;
+                border: 0;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: 0.3s;
+        }
+        #logout:hover {opacity: 0.6}
+
+        #newfile{
+            display: flex;
+            justify-content: center;
+        }
+
+        #setup{
+            width: 15%;
+            background-color: #ffffff;
+            border: 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        #setup:hover {opacity: 0.6}
+    </style>
 <table>
     <ul>
-        <li>Login</li>
+        <li>Vous êtes connecté(e) en tant que {{ utilisateur }}</li>
+        <li>
+            <form action="http://127.0.0.1:8000/logout">
+                <button id="logout" type="submit">Se déconnecter</button>
+            </form>
+        </li>
         {% block liste %}
+            <span>Mes documentations :</span>
+            <div id="filesnames">
             {% for i in files %}
-                <li>{{ i.name }}</li>
+                <li id="file">
+                    <a id="link" href="/file/{{ i.name }}">{{ i.name }}</a>
+                    <a id="image" href="/file/delete/{{ i.id }}"><img src="{{ asset('css/img/poubelle.png') }}" alt="trash"></a>
+                </li>
             {% endfor %}
+                <li id="newfile">
+                    <form action="http://127.0.0.1:8000/setup">
+                        <button id="setup" type="submit"> + </button>
+                    </form>
+                </li>
+            </div>
         {% endblock %}
     </ul>
 </table>

@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    background-color: #2C2F33;
 }
 
 ul {
@@ -11,25 +12,4 @@ ul {
     position: fixed;
     height: 100%;
     overflow: auto;
-}
-
-li a {
-    display: block;
-    color: #000;
-    padding: 8px 16px;
-    text-decoration: none;
-}
-
-li a.active {
-    background-color: #04AA6D;
-    color: white;
-}
-
-li a:hover:not(.active) {
-    background-color: #555;
-    color: white;
-}
-
-#page{
-    margin-left: 25%;
 }

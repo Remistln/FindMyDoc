@@ -39,6 +39,11 @@ class Documentation
      */
     private $link;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $filename;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,6 +93,18 @@ class Documentation
     public function setLink(string $link): self
     {
         $this->link = $link;
+
+        return $this;
+    }
+
+    public function getFileName(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFileName(string $filename): self
+    {
+        $this->filename = $filename;
 
         return $this;
     }

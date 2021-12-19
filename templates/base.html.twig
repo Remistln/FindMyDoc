@@ -15,8 +15,6 @@
             {{ render(controller('App\\Controller\\NavbarController::navbar')) }}
 
         {% endblock %}
-        <div id="page">
-            {% block body %}{% endblock %}
-        </div>
+        {% block body %}{% endblock %}
     </body>
 </html>

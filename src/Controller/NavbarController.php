@@ -16,11 +16,12 @@ class NavbarController extends AbstractController
         $name = $this->getUser()->getUserIdentifier();
 
         $file = $this->getDoctrine()->getRepository(File::class)->findBy(
-            ['owner' => $name]
-        );;
+            ['owner' => $name], ['name' => 'ASC']
+        );
 
         return $this->render('navbar/index.html.twig', [
             'controller_name' => 'NavbarController',
+            'utilisateur' => $name,
             'files' => $file,
         ]);
     }

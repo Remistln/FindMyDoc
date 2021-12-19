@@ -29,6 +29,11 @@ class File
      */
     private $owner;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $DocList = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +66,18 @@ class File
     public function setOwner(string $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getDocList(): ?array
+    {
+        return $this->DocList;
+    }
+
+    public function setDocList(?array $DocList): self
+    {
+        $this->DocList = $DocList;
 
         return $this;
     }
