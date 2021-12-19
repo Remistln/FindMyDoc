@@ -12,44 +12,53 @@
             text-align: center;
             color: white;
         }
+        li{
+            list-style-type: none;
+        }
         #doc{
             list-style-type: none;
-            display: flex;
             align-items: center;
             justify-content: center;
         }
 
         iframe{
             border: 0;
-            padding-left: 5%;
         }
-        #deletedoc{
-            width: 100%;
-            background-color: #ffffff;
-            border: 0;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
+
+        #lipasdedoc{
+            display: flex;
+            justify-content: center;
+
+        }
+
+        #pasdedoc{
+            text-align: center;
+            width: 50%;
+            margin-top: 30%;
+            background-color: white;
+            border-radius: 8px;
+            color: Black;
         }
     </style>
     <div class="container-lg">
         <h1>{{ nom }}</h1>
         {% if listdoc %}
             {% for doc in listdoc %}
-                {% if doc.type == "pdf" %}
-                    <li id="doc">
-                        <form action="../../doc/delete/{{ doc.id }}">
-                            <button id="deletedoc" type="submit"> - </button>
-                        </form>
-                        <iframe
-                                src="{{ doc.link }}"
-                                width="70%"
-                                height="500"
-                                scrolling="no">
-                        </iframe>
-                    </li>
+                {% if doc %}
+                        <li id="doc">
+                            <iframe
+                                    src="{{ doc.link }}"
+                                    width="70%"
+                                    height="500"
+                                    scrolling="no">
+                            </iframe>
+                        </li>
                 {% endif %}
             {% endfor %}
+            {% else %}
+            <li id="lipasdedoc">
+                <h1 id="pasdedoc">Pas de doc</h1>
+            </li>
         {% endif %}
     </div>
 {% endblock %}
