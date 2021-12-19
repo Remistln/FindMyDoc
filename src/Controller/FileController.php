@@ -55,19 +55,19 @@ class FileController extends AbstractController
             ->getRepository(File::class)
             ->find($id);
 
-        $this->getDoctrine()->getManager()->remove($deletefile);
-        $em->flush();
-
         $liste = $deletefile->getDocList();
         if ($liste){
             foreach ($liste as $doc){
-                $document = $em->getRepository(Documentation::class)->find($id);;
+                $document = $em->getRepository(Documentation::class)->find($doc);
                 $chemin = "../public/uploads/" . $username . '/' . $document->getName() . '.' . $document->getExtention();
                 unlink($chemin);
                 $this->getDoctrine()->getManager()->remove($document);
                 $em->flush();
             }
         }
+
+        $this->getDoctrine()->getManager()->remove($deletefile);
+        $em->flush();
 
         return $this->render('file/index.html.twig', [
             'controller_name' => 'FileController',

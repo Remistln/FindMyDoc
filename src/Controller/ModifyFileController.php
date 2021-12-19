@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Documentation;
 use App\Entity\File;
 use App\Form\MakePageFormType;
+use App\Form\UploadType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -38,7 +39,7 @@ class ModifyFileController extends AbstractController
         }
 
         // Creer le formulaire d'ajout de doc
-        $form = $this->createForm(MakePageFormType::class);
+        $form = $this->createForm(UploadType::class);
         $form->handleRequest($request);
 
         // Si le formulaire est submit et valide
