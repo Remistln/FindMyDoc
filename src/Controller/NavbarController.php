@@ -3,11 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\File;
-use App\Entity\User;
-use App\Services\TableFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+
 
 class NavbarController extends AbstractController
 {

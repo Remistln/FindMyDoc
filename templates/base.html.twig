@@ -10,11 +10,11 @@
         {% endblock %}
     </head>
     <body>
-        {% block navbar %}
+    {% block navbar %}
 
-            {{ render(controller('App\\Controller\\NavbarController::navbar')) }}
+        {{ render(controller('App\\Controller\\NavbarController::navbar')) }}
 
-        {% endblock %}
+    {% endblock %}
         {% block body %}{% endblock %}
     </body>
 </html>

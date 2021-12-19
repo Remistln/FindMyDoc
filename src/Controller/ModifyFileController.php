@@ -43,7 +43,6 @@ class ModifyFileController extends AbstractController
         // Si le formulaire est submit et valide
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->get('fichier')->getData();
-            dd($form->get('fichier')->getData())
 
             //Recupere le nom du fichier avec l'extension
             $originalFilename = pathinfo($data->getClientOriginalName(), PATHINFO_FILENAME);
