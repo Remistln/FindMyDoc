@@ -12,6 +12,7 @@ class NavbarController extends AbstractController
     {
         $name = $this->getUser()->getUserIdentifier();
 
+        //Recupere la liste des pages lies a l'utilisateur et l'envois dans la vue twig
         $file = $this->getDoctrine()->getRepository(File::class)->findBy(
             ['owner' => $name], ['name' => 'ASC']
         );

@@ -23,7 +23,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            // encode the mot de passe
             $user->setPassword(
             $userPasswordHasher->hashPassword(
                     $user,
@@ -31,13 +31,16 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            //Enregistre l'utilisateur dans la base de donnees
             $entityManager->persist($user);
             $entityManager->flush();
 
+            //Creer un dossier avec le nom d'utilisateur
             $nom = $user->getUserIdentifier();
             $chemin = "../public/uploads/" . $nom;
             mkdir ($chemin, 0700);
 
+            //Se connecte directement
             return $userAuthenticator->authenticateUser(
                 $user,
                 $authenticator,

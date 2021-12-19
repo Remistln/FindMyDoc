@@ -20,7 +20,9 @@ class SetupController extends AbstractController
         $form = $this->createForm(MakePageFormType::class);
         $form->handleRequest($request);
 
+        //Si le formulaire est valide
         if ($form->isSubmitted() && $form->isValid()) {
+            //Creer une nouvelle page de documentation
             $file = new File();
             $fileName = $form->get('NomDeLaPage')->getData();
             $userName = $this->getUser()->getUserIdentifier();
@@ -30,8 +32,12 @@ class SetupController extends AbstractController
             $file->setOwner($userName);
             $file->setDocList($liste);
 
+            //L'enregistre dans la base de donnees
             $entityManager->persist($file);
             $entityManager->flush();
+
+            //Retourne sur la page d'acceuil
+            return $this->redirectToRoute('files');
         }
 
         return $this->render('setup/index.html.twig', [

@@ -23,6 +23,7 @@ class FileController extends AbstractController
     #[Route('/file/{name}', name: 'file')]
     public function page($name){
 
+        //recupere une page
         $username = $this->getUser()->getUserIdentifier();
         $em = $this->getDoctrine()->getManager();
 
@@ -31,8 +32,12 @@ class FileController extends AbstractController
             ->findOneBy(
                 ['owner' => $username, 'name' => $name]
             );
+
+        //Recupere la liste des documents lies a cette page
         $liste = $get->getDocList();
         $listdoc = [];
+
+        //Pour chaque document, le recupere et le met dans une liste pour la passser a la vue twig
         if ($liste){
             foreach ($liste as $doc){
                 $document = $em->getRepository(Documentation::class)->findOneBy(['id' => $doc]);
@@ -48,6 +53,8 @@ class FileController extends AbstractController
 
     #[Route('/file/delete/{id}', name: 'file_delete_{id}')]
     public function delete($id){
+
+        // recupere une page
         $username = $this->getUser()->getUserIdentifier();
         $em = $this->getDoctrine()->getManager();
 
@@ -55,17 +62,23 @@ class FileController extends AbstractController
             ->getRepository(File::class)
             ->find($id);
 
+        //Recupere la liste des documents de la page
         $liste = $deletefile->getDocList();
         if ($liste){
+            //Pour chaque document dans la liste
             foreach ($liste as $doc){
+                //Recupere le document
                 $document = $em->getRepository(Documentation::class)->find($doc);
+                //Supprime le fichier physique
                 $chemin = "../public/uploads/" . $username . '/' . $document->getName() . '.' . $document->getExtention();
                 unlink($chemin);
+                //Le retire de la base de donnee
                 $this->getDoctrine()->getManager()->remove($document);
                 $em->flush();
             }
         }
 
+        //supprime la page dans la base de donnees
         $this->getDoctrine()->getManager()->remove($deletefile);
         $em->flush();
 
