@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Documentation;
 use App\Entity\File;
 use App\Form\MakePageFormType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ModifyFileController extends AbstractController
 {
     #[Route('/file/modify/{name}', name: 'modify_file')]
-    public function index($name, Request $request, SluggerInterface $slugger): Response
+    public function index($name, Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
     {
         // Pour chaque doc lié a cette page, il va les mettre dans une liste pour la passer dans la vue twig
         $username = $this->getUser()->getUserIdentifier();
@@ -43,14 +44,14 @@ class ModifyFileController extends AbstractController
         // Si le formulaire est submit et valide
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->get('fichier')->getData();
-            dd($form->get('fichier')->getData())
 
             //Recupere le nom du fichier avec l'extension
             $originalFilename = pathinfo($data->getClientOriginalName(), PATHINFO_FILENAME);
 
             // Donne un nom unique au fichier
             $safeFilename = $slugger->slug($originalFilename);
-            $docname = $safeFilename.'-'.uniqid().'.'.$data->guessExtension();
+            $newname = $safeFilename.'-'.uniqid();
+            $docname = $newname.'.'.$data->getClientOriginalExtension();
 
             //On le deplace dans le bon dossier
             try {
@@ -64,6 +65,42 @@ class ModifyFileController extends AbstractController
 
             //Ajout dans la database
             $doc = new Documentation();
+            $docExtension = $data->getClientOriginalExtension();
+            $lien = "../uploads/" . $username . "/" . $newname . "." . $docExtension;
+
+            if ($docExtension == 'pdf'){
+                $doc->setName($newname);
+                $doc->setExtention($docExtension);
+                $doc->setLink($lien);
+                $doc->setType($docExtension);
+                $doc->setFileName($name);
+
+                $entityManager->persist($doc);
+                $entityManager->flush();
+            }else{
+                dump($docExtension);
+            }
+
+            // ajout de l'id de la doc dans la liste des Doc du fichier
+            $lastDoc = $em
+                ->getRepository(Documentation::class)
+                ->findOneBy([
+                    'link' => $lien
+                ]);
+            $id = $lastDoc->getId();
+            $docfile = $em
+                ->getRepository(File::class)
+                ->findOneBy(
+                    ['owner' => $username, 'name' => $name]
+                );
+
+            $listDoc = $docfile->getDocList();
+            array_push($listDoc, $id);
+
+            $docfile->setDocList($listDoc);
+            $em->flush();
+
+            return $this->redirectToRoute('file', ['name' => $name]);
         }
 
         return $this->render('modify_file/index.html.twig', [

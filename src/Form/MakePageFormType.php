@@ -23,6 +23,7 @@ class MakePageFormType extends AbstractType
         $builder
             ->add('choice', ChoiceType::class, [
                 'choices'  => [
+
                     'PDF' => $documentation,
                 ], 'allow_extra_fields' => true,
             ])

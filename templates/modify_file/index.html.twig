@@ -21,10 +21,15 @@
             color: white;
         }
         #doc{
+            margin-top: 7px;
             list-style-type: none;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        #nodoc{
+            color: white;
         }
 
         span{
@@ -71,10 +76,16 @@
             margin-left: 25%;
             list-style-type: none;
             flex-direction: column;
+            color: white;
         }
 
         #choicedoc, #fichier, #new{
-            margin-top: 10px;
+            margin-top: 15%;
+            color: white;
+        }
+
+        #new, #choicedoc{
+            color: black;
         }
 
     </style>
@@ -83,6 +94,7 @@
         <h2>Liste des Fichiers :</h2>
         {% if listdoc %}
             {% for doc in listdoc %}
+                {% if doc %}
                 <li id="doc">
                     <form action="../../doc/delete/{{ doc.id }}">
                         <button id="deletedoc" type="submit"> - </button>
@@ -91,6 +103,11 @@
                             {{ doc.name }}
                     </span>
                 </li>
+                    {% else %}
+                        <h1 id="nodoc">
+                            Vous n'avez pas de documents sur cette page
+                        </h1>
+                {% endif %}
             {% endfor %}
         {% else %}
             <h1 id="nodoc">
@@ -108,9 +125,9 @@
         <h2>Ajouter un fichier :</h2>
         {{ form_start(modifyForm) }}
 
-        {{ form_row(modifyForm.choice) }}
-        {{ form_row(modifyForm.fichier) }}
-        {{ form_row(modifyForm.submit) }}
+        {{ form_row(modifyForm.choice, { 'id': 'choicedoc'}) }}
+        {{ form_row(modifyForm.fichier, { 'id': 'fichier'}) }}
+        {{ form_row(modifyForm.submit, { 'id': 'new'}) }}
         {{ form_end(modifyForm) }}
     </div>
     <script>
