@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Documentation;
 use App\Entity\File;
-use App\Form\MakePageFormType;
 use App\Form\UploadType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
